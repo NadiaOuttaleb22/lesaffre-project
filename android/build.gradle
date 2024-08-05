@@ -1,0 +1,31 @@
+// Fichier build.gradle (niveau racine)
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+         // assurez-vous d'avoir la bonne version de Gradle Android
+        classpath 'com.google.gms:google-services:4.4.2' // Ajoutez cette ligne
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

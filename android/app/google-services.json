@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "337254594165",
+    "project_id": "lesaffre-b1bae",
+    "storage_bucket": "lesaffre-b1bae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337254594165:android:a63164c14119330998ea3c",
+        "android_client_info": {
+          "package_name": "com.example.prj"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvNE5_9FOwx-5pbCg4wO2QcY93TPIRXdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
