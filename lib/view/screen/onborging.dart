@@ -14,10 +14,7 @@ class Onborging extends StatelessWidget {
         body: SafeArea(
             child: Column(
       children: [
-        Expanded(
-          flex: 3,
-          child: Slidercostum(),
-        ),
+        Expanded(flex: 3, child: Slidercostum()),
         Expanded(
             flex: 1,
             child: Column(

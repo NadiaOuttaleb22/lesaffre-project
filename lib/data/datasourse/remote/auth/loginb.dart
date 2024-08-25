@@ -33,12 +33,12 @@ class LoginData {
   LoginData(this.crud);
 
   postdata(String usersLogin, String userPassword) async {
-    var response = await crud.postData(Linkapi.signUp, {
+    var response = await crud.postData(Linkapi.login, {
       "usersLogin": usersLogin,
       "userPassword": userPassword,
     });
 
-    print('UseLogin: $usersLogin');
+    print('usersLogin: $usersLogin');
     print('Password: $userPassword');
     print('===========================');
     print(response);

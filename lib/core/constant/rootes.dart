@@ -13,4 +13,12 @@ class approote {
   static const String succesIcon = "/succesIcon";
   static const String signUp = "/signup";
   static const String test = "/testview";
+
+  static const String providerHomePage = "/providerhomepage";
+  static const String normalHomePage = "/normalhomepage";
+  static const String itemslunch = "/itemslunch";
+  static const String productdetails = "/productdetails";
+  static const String myfavorite = "/myfavorite";
+  static const String card = "/card";
+  static const String checkout = "/checkout";
 }

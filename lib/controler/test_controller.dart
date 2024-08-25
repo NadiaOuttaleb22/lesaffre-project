@@ -16,7 +16,7 @@ class TestController extends GetxController {
     var response = await testData.GetData();
     statusrequest = handlingData(response);
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == 'succes') {
         data.addAll(response['data']);
         print("Data fetched successfully: $data");
       } else {

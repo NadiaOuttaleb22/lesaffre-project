@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:prj/controler/auth/forgetpass_Controller.dart';
+import 'package:prj/controler/forgetpassword/forgetpass_controller.dart';
 
 class Mybinding extends Bindings {
   @override

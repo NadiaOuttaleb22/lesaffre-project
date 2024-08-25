@@ -21,7 +21,7 @@ class SingupControllerImp extends SingupController {
   String access = "1";
   String typeUser = "1";
 
-  late Statusrequest statusrequest;
+  Statusrequest statusrequest = Statusrequest.none;
 
   showPassword() {
     isShowPassword = !isShowPassword;
@@ -47,29 +47,22 @@ class SingupControllerImp extends SingupController {
     if (formstate.currentState!.validate()) {
       statusrequest = Statusrequest.loading;
       update();
-      print("Fetching data...");
       var response = await signupData.postdata(username.text, loginn.text,
           email.text, password.text, access, typeUser);
-      print('=====================awit');
       statusrequest = handlingData(response);
       if (Statusrequest.success == statusrequest) {
-        if (response['status'] == 'success') {
+        if (response['status'] == 'succes') {
           Get.offNamed(approote.succesIconAdd);
         } else {
           update();
-          Get.defaultDialog(
-              title: 'Warning', middleText: 'Email Already Exists');
-          statusrequest = Statusrequest.failure;
         }
-        print('fin=============');
       } else {
-        print("Failed to fetch data: $response");
+        Get.defaultDialog(title: 'Warning', middleText: 'Email Already Exists');
+        statusrequest = Statusrequest.failure;
       }
       update();
       // You can handle the radio value here if needed
       //
-    } else {
-      print('not valid');
     }
   }
 

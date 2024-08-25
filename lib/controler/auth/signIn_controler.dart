@@ -18,7 +18,7 @@ class SigninControllerImp extends SigninControler {
 
   late TextEditingController loginn;
   late TextEditingController password;
-  Statusrequest? statusrequest;
+  Statusrequest statusrequest = Statusrequest.none;
 
   bool isShowPassword = true;
   showPassword() {
@@ -31,35 +31,33 @@ class SigninControllerImp extends SigninControler {
     if (formstate.currentState!.validate()) {
       statusrequest = Statusrequest.loading;
       update();
-      print("Fetching data...");
       var response = await loginData.postdata(loginn.text, password.text);
-      print('=====================awit');
       statusrequest = handlingData(response);
       if (Statusrequest.success == statusrequest) {
-        if (response['status'] == 'success') {
-          Get.offNamed(approote.changepassword);
+        if (response['status'] == 'succes') {
+          Get.offNamed(approote.changepassword,
+              arguments: {"userLogin": loginn.text});
         } else {
           update();
-          Get.defaultDialog(
-              title: 'Warning', middleText: 'Email Or password not exists');
-          statusrequest = Statusrequest.failure;
         }
-        print('fin=============');
       } else {
-        print("Failed to fetch data: $response");
+        Get.defaultDialog(
+            title: 'Warning', middleText: 'Login Or password not Corrects');
+        statusrequest = Statusrequest.failure;
       }
       update();
-      // You can handle the radio value here if needed
-      //
-    } else {
-      print('not valid');
     }
   }
 
   @override
   void onInit() {
+    /* FirebaseMessaging.instance.getToken().then((value) {
+      print("vale: $value");
+      String? token = value;
+    }); */
     loginn = TextEditingController();
     password = TextEditingController();
+
     super.onInit();
   }
 

@@ -1,4 +1,4 @@
-import 'package:prj/core/constant/imageassets.dart';
+import 'package:prj/core/constant/imageassets_and_lottie.dart';
 import 'package:prj/data/model/onboardingmodel.dart';
 
 List<Onboardingmodel> onbordinglist = [

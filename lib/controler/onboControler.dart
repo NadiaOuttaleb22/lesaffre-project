@@ -19,7 +19,7 @@ class Onbocontrolerimp extends Onbocontroler {
   next() {
     currentpage++;
     if (currentpage > onbordinglist.length - 1) {
-      myservices.sharedPreferences.setString('onboarding', '1');
+      myservices.sharedPreferences.setString('step', '1');
       Get.offAllNamed(approote.login);
     } else {
       pageController.animateToPage(currentpage,

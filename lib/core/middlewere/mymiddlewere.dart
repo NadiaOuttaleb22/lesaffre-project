@@ -10,9 +10,19 @@ class Mymiddlewere extends GetMiddleware {
   Myservices myservices = Get.find();
   @override
   RouteSettings? redirect(String? route) {
-    if (myservices.sharedPreferences.getString('onboarding') == '1') {
+    if (myservices.sharedPreferences.getString('step') == '2') {
+      if (myservices.sharedPreferences.getString('typeuser') == '1') {
+        return const RouteSettings(name: approote.normalHomePage);
+      } else if (myservices.sharedPreferences.getString('typeuser') == '2') {
+        return const RouteSettings(name: approote.welcome);
+      } else if (myservices.sharedPreferences.getString('typeuser') == '3') {
+        return const RouteSettings(name: approote.providerHomePage);
+      }
+    }
+    if (myservices.sharedPreferences.getString('step') == '1') {
       return const RouteSettings(name: approote.login);
     }
+
     return null;
   }
 }

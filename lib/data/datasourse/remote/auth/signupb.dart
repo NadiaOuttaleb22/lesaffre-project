@@ -43,16 +43,6 @@ class SignupData {
       "userType": userType,
     });
 
-    print('Username: $username');
-    print('UseLogin: $usersLogin');
-    print('Email: $userEmail');
-    print('Password: $userPassword');
-
-    print('Acces: $userAcces');
-    print('Type: $userType');
-    print('===========================');
-    print(response);
-
     return response.fold((l) => l, (r) => r);
   }
 }
