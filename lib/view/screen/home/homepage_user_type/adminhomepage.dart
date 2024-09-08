@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prj/controler/home/user_type_home/adminhomepagecontroller.dart';
+import 'package:prj/controler/home/admin/adminhomepagecontroller.dart';
 import 'package:prj/core/class/handlingdataview.dart';
 import 'package:prj/core/constant/rootes.dart';
 import 'package:prj/data/model/items_lunck_model.dart';
@@ -10,7 +10,6 @@ import 'package:prj/view/widget/home/homepage_wegets/costum_titlehome.dart';
 import 'package:prj/view/widget/home/categories/list_categories_lunch.dart';
 import 'package:prj/view/widget/home/homepage_wegets/costum_card.dart';
 import 'package:prj/view/widget/home/homepage_wegets/costumappbarHome.dart';
-import 'package:prj/view/widget/home/itemslunch/list_items_lunch.dart';
 
 class Adminhomepage extends StatelessWidget {
   const Adminhomepage({super.key});
@@ -19,41 +18,46 @@ class Adminhomepage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(AdminhomepagecontrollerImp());
     return GetBuilder<AdminhomepagecontrollerImp>(
-        builder: (controllerImp) => Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: ListView(children: [
-              Costumappbarhome(
-                titleappbar: 'find your meal',
-                onPressedIcon: () {},
-                onPressedSearch: () {
-                  controllerImp.onSearchitems();
-                },
-                onPressedIconfavorite: () {
-                  Get.toNamed(approote.myfavorite);
-                },
-                onChanged: (val) {
-                  controllerImp.checkSearch(val);
-                },
-                mycontroller: controllerImp.search!,
-              ),
-              Handlingdataview(
-                  statusrequest: controllerImp.statusrequest,
-                  widget: !controllerImp.isSearch
-                      ? const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CostumCard(
-                                titl: 'Lesafre surprise', body: 'Cashback 20%'),
-                            CostumTitlehome(text: 'Categories'),
-                            ListCategoriesLunch(),
-                            CostumTitlehome(text: 'for you'),
-                            ListItemsLunch(),
-                          ],
-                        )
-                      : ListItemsSearch(
-                          listdatamodel: controllerImp.listdata,
-                        ))
-            ])));
+        builder: (controllerImp) => Handlingdataview(
+            statusrequest: controllerImp.statusrequest,
+            widget: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: ListView(children: [
+                  Costumappbarhome(
+                    titleappbar: 'find your meal',
+                    onPressedSearch: () {
+                      controllerImp.isSearchFieldNotEmpty() == false
+                          ? controllerImp.onSearchitems()
+                          : null;
+                    },
+                    onPressedIconfavorite: () {
+                      Get.toNamed(approote.myfavorite);
+                    },
+                    onChanged: (val) {
+                      controllerImp.checkSearch(val);
+                    },
+                    mycontroller: controllerImp.search!,
+                  ),
+                  Handlingdataview(
+                      statusrequest: controllerImp.statusrequest,
+                      widget: !controllerImp.isSearch
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //if (controllerImp.settings.isNotEmpty)
+                                CostumCard(
+                                    titl: controllerImp.titlesetting,
+                                    body: controllerImp.bodysetting),
+                                const CostumTitlehome(text: 'Categories'),
+                                const ListCategoriesLunch(),
+                                //CostumTitlehome(text: 'for you'),
+                                //ListItemsLunch(),
+                              ],
+                            )
+                          : ListItemsSearch(
+                              listdatamodel: controllerImp.listdata,
+                            ))
+                ]))));
   }
 }
 
@@ -63,6 +67,8 @@ class ListItemsSearch extends GetView<AdminhomepagecontrollerImp> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return ListView.builder(
         itemCount: listdatamodel.length,
         shrinkWrap: true,
@@ -77,9 +83,15 @@ class ListItemsSearch extends GetView<AdminhomepagecontrollerImp> {
               padding: const EdgeInsets.all(7),
               child: Row(children: [
                 Expanded(
-                    child: CachedNetworkImage(
-                        imageUrl:
-                            "${Linkapi.imageHomelunchitems}/${listdatamodel[index].itemsImage}")),
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        "${Linkapi.imageHomelunchitems}/${listdatamodel[index].itemsImage}",
+                    width: screenWidth *
+                        0.2, // Par exemple, 10% de la largeur de l'écran
+                    height: screenHeight *
+                        0.2, // Par exemple, 10% de la hauteur de l'écran
+                  ),
+                ),
                 Expanded(
                     flex: 2,
                     child: ListTile(

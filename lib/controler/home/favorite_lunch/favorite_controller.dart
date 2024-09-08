@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:prj/core/class/statusrequest.dart';
 import 'package:prj/core/functions/handlingdatacontroller.dart';
@@ -26,9 +25,7 @@ class FavoriteController extends GetxController {
     statusrequest = handlingData(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'succes') {
-        Get.rawSnackbar(
-            title: 'succes',
-            messageText: const Text('succes to add product to favorite'));
+        Get.snackbar("Success", "succes to add product to favorite");
 
         //data.addAll(response['data']);
         //print("Data fetched successfully: $data");
@@ -49,9 +46,8 @@ class FavoriteController extends GetxController {
     statusrequest = handlingData(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'succes') {
-        Get.rawSnackbar(
-            title: 'succes',
-            messageText: const Text('succes to remove product to favorite'));
+        Get.snackbar("Success", "Success to remove product to favorite");
+
         //data.addAll(response['data']);
         // print("Data fetched successfully: $data");
       } else {

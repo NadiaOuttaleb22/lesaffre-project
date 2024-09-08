@@ -1,29 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prj/core/class/statusrequest.dart';
+import 'package:prj/core/constant/rootes.dart';
 import 'package:prj/core/functions/handlingdatacontroller.dart';
 import 'package:prj/core/services/sercice.dart';
 import 'package:prj/data/datasourse/remote/home/cart_data.dart';
+import 'package:prj/data/datasourse/remote/home/checkout.dart';
 import 'package:prj/data/model/cart_model.dart';
 import 'package:prj/data/model/coupon_model.dart';
 
 class AddAndRemovecartController extends GetxController {
   TextEditingController? controllercoupon;
-  CartData cartData = CartData(Get.find());
+  CartData cartData = Get.put(CartData(Get.find()));
+  CheckoutData checkoutData = Get.put(CheckoutData(Get.find()));
+
   late Statusrequest statusrequest;
   Myservices myservices = Get.find();
   List<CartModel> data = [];
   double priceorders = 0.0;
   int totalitems = 0;
   CouponModel? couponModel;
-  int? discountcoupon = 0;
+  int discountcoupon = 0;
   String? nameofcoupon;
+  late int couponid;
 
   @override
   void onInit() {
+    couponid = 0;
+    discountcoupon = 0;
     controllercoupon = TextEditingController();
     super.onInit();
     View(); // Charge les données lors de l'initialisation du contrôleur
+  }
+
+  goToPageOrders() {
+    if (data.isEmpty) return Get.snackbar("warning", "the cart is empty");
   }
 
   add(String itemsid) async {
@@ -35,10 +46,7 @@ class AddAndRemovecartController extends GetxController {
     statusrequest = handlingData(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'succes') {
-        Get.rawSnackbar(
-            title: 'succes',
-            messageText: const Text('succes to add product to cart',
-                style: TextStyle(color: Colors.white)));
+        Get.snackbar("Success", "Success to add product to cart");
 
         //data.addAll(response['data']);
         //print("Data fetched successfully: $data");
@@ -58,12 +66,7 @@ class AddAndRemovecartController extends GetxController {
     statusrequest = handlingData(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'succes') {
-        Get.rawSnackbar(
-            title: 'succes',
-            messageText: const Text(
-              'succes to remove product to cart',
-              style: TextStyle(color: Colors.white),
-            ));
+        Get.snackbar("Success", "Success to remove product to cart");
 
         //data.addAll(response['data']);
         //print("Data fetched successfully: $data");
@@ -109,7 +112,6 @@ class AddAndRemovecartController extends GetxController {
   }
 
   checkCoupon() async {
-    //data.clear();
     statusrequest = Statusrequest.loading;
     update();
     var response = await cartData.checkCoupon(controllercoupon!.text);
@@ -120,17 +122,49 @@ class AddAndRemovecartController extends GetxController {
         couponModel = CouponModel.fromJson(datacoupon);
         discountcoupon = int.parse(couponModel!.couponDiscount.toString());
         nameofcoupon = couponModel!.couponName;
+        couponid = couponModel!.couponId!;
       }
     } else {
       statusrequest = Statusrequest.none;
       discountcoupon = 0;
       nameofcoupon = null;
+      couponid = 0;
+      Get.snackbar("Warning", "coupon not valid");
+    }
+    update();
+  }
+
+  checkout() async {
+    Map<String, dynamic> datacheckout = {
+      "usersid": myservices.sharedPreferences.getString("id"),
+      "pricedelivery": "0",
+      "priceorders": priceorders.toString(),
+      "coupondiscount": discountcoupon.toString(),
+      "couponid": couponid.toString(),
+    };
+
+    statusrequest = Statusrequest.loading;
+    update();
+    var response = await checkoutData.checkout(datacheckout);
+    statusrequest = handlingData(response);
+    if (Statusrequest.success == statusrequest) {
+      if (response['status'] == 'succes') {
+        //print("====================checkout success ${couponid.runtimeType}");
+        Get.offAllNamed(approote.providerHomePage);
+        Get.snackbar("succes", "Your orders was successfully");
+      } else {
+        statusrequest = Statusrequest.none;
+        Get.snackbar("mistake", "Try later");
+      }
+    } else {
+      statusrequest = Statusrequest.none;
+      //Get.snackbar("mistake", "Try late");
     }
     update();
   }
 
   getTotalPriceOreder() {
-    return (priceorders - priceorders * discountcoupon! / 100);
+    return (priceorders - priceorders * discountcoupon / 100);
   }
 
   resetVar() {

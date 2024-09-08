@@ -31,8 +31,8 @@ class ListItems extends GetView<ItemslunchcontrollerImp> {
                   child: CachedNetworkImage(
                     imageUrl:
                         "${Linkapi.imageHomelunchitems}/${itemLunchModel.itemsImage!}",
-                    height: 100,
-                    width: 100,
+                    height: 80,
+                    width: 80,
                     placeholder: (context, url) =>
                         const CircularProgressIndicator(),
                     errorWidget: (context, url, error) =>

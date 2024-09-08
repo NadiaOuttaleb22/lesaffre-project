@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 class Costumappbarhome extends StatelessWidget {
   final String titleappbar;
   final void Function()? onPressedIconfavorite;
-  final void Function()? onPressedIcon;
   final void Function()? onPressedSearch;
   final void Function(String)? onChanged;
   final TextEditingController mycontroller;
   const Costumappbarhome(
       {super.key,
       required this.titleappbar,
-      required this.onPressedIcon,
       required this.onPressedIconfavorite,
       required this.onPressedSearch,
       required this.onChanged,
@@ -36,21 +34,7 @@ class Costumappbarhome extends StatelessWidget {
                 filled: true,
                 fillColor: const Color.fromARGB(255, 212, 210, 210)),
           )),
-          const SizedBox(width: 10),
-          Container(
-            decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 212, 210, 210),
-                borderRadius: BorderRadius.circular(15)),
-            width: 60,
-            height: 60,
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            child: IconButton(
-              onPressed: onPressedIcon,
-              icon: const Icon(Icons.notifications_active_outlined),
-              color: const Color.fromARGB(255, 70, 70, 70),
-            ),
-          ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 8),
           Container(
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 212, 210, 210),

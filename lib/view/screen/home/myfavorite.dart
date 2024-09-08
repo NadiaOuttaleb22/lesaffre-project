@@ -22,7 +22,6 @@ class Myfavorite extends StatelessWidget {
               children: [
                 Costumappbarhome(
                   titleappbar: 'find your meal',
-                  onPressedIcon: () {},
                   onPressedSearch: () {
                     controller.onSearchitems();
                   },
@@ -44,7 +43,7 @@ class Myfavorite extends StatelessWidget {
                             itemCount: controller.data.length,
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2, childAspectRatio: 0.6),
+                                    crossAxisCount: 2, childAspectRatio: 0.5),
                             itemBuilder: (context, index) {
                               return CostumlistFavorite(
                                   myFavoriteModel: controller.data[index]);

@@ -15,56 +15,68 @@ class Items extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Obtenez la largeur et la hauteur de l'écran
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     Get.put(ItemslunchcontrollerImp());
     ItemslunchcontrollerImp controllerImp = Get.put(ItemslunchcontrollerImp());
     FavoriteController controllerFav = Get.put(FavoriteController());
 
     return Scaffold(
-        body: Container(
-      padding: const EdgeInsets.all(15),
-      child: ListView(
-        children: [
-          Costumappbarhome(
-            titleappbar: 'find your meal',
-            onPressedIcon: () {},
-            onPressedSearch: () {
-              controllerImp.onSearchitems();
-            },
-            onPressedIconfavorite: () {
-              Get.toNamed(approote.myfavorite);
-            },
-            onChanged: (val) {
-              controllerImp.checkSearch(val);
-            },
-            mycontroller: controllerImp.search!,
-          ),
-          const SizedBox(height: 8),
-          const ListCategoriesItems(),
-          GetBuilder<ItemslunchcontrollerImp>(
+      body: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: screenHeight * 0.02,
+          horizontal: screenWidth * 0.02,
+        ),
+        child: ListView(
+          children: [
+            Costumappbarhome(
+              titleappbar: 'find your meal',
+              onPressedSearch: () {
+                controllerImp.isSearchFieldNotEmpty() == false
+                    ? controllerImp.onSearchitems()
+                    : null;
+              },
+              onPressedIconfavorite: () {
+                Get.toNamed(approote.myfavorite);
+              },
+              onChanged: (val) {
+                controllerImp.checkSearch(val);
+              },
+              mycontroller: controllerImp.search!,
+            ),
+            const SizedBox(height: 5),
+            const ListCategoriesItems(),
+            GetBuilder<ItemslunchcontrollerImp>(
               builder: (controller) => Handlingdataview(
-                  statusrequest: controller.statusrequest,
-                  widget: !controllerImp.isSearch
-                      ? GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: controller.data.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2, childAspectRatio: 0.6),
-                          itemBuilder: (BuildContext context, index) {
-                            controllerFav.isfavorite[controller.data[index]
-                                    ['items_id']] =
-                                controller.data[index]['favorite'];
-                            return ListItems(
-                                active: false,
-                                itemLunchModel: ItemLunchModel.fromJson(
-                                    controller.data[index]));
-                          })
-                      : ListItemsSearch(
-                          listdatamodel: controllerImp.listdata,
-                        )))
-        ],
+                statusrequest: controller.statusrequest,
+                widget: !controllerImp.isSearch
+                    ? GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: controller.data.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: screenWidth / (screenHeight / 1.1),
+                        ),
+                        itemBuilder: (BuildContext context, index) {
+                          controllerFav.isfavorite[controller.data[index]
+                                  ['items_id']] =
+                              controller.data[index]['favorite'];
+                          return ListItems(
+                              active: false,
+                              itemLunchModel: ItemLunchModel.fromJson(
+                                  controller.data[index]));
+                        })
+                    : ListItemsSearch(
+                        listdatamodel: controllerImp.listdata,
+                      ),
+              ),
+            )
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

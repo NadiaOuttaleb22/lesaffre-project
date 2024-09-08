@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prj/controler/home/user_type_home/adminhomepagecontroller.dart';
+import 'package:prj/controler/home/admin/adminhomepagecontroller.dart';
 import 'package:prj/core/class/statusrequest.dart';
 import 'package:prj/core/functions/handlingdatacontroller.dart';
 import 'package:prj/core/services/sercice.dart';

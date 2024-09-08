@@ -1,61 +1,89 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prj/controler/home/user_type_home/adminhomepagecontroller.dart';
+import 'package:prj/controler/home/offers_controller.dart';
+import 'package:prj/core/class/handlingdataview.dart';
 import 'package:prj/core/constant/color.dart';
+import 'package:prj/core/constant/rootes.dart';
 import 'package:prj/data/model/items_lunck_model.dart';
 import 'package:prj/linkapi.dart';
+import 'package:prj/view/screen/home/homepage_user_type/adminhomepage.dart';
+import 'package:prj/view/widget/home/homepage_wegets/costumappbarHome.dart';
 
-class ListItemsLunch extends GetView<AdminhomepagecontrollerImp> {
+class ListItemsLunch extends GetView<OffersController> {
   const ListItemsLunch({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      children: [
-        ElevatedButton(
-          onPressed: controller.areRadiosDisabled.value
-              ? null // Désactive le bouton si les radios sont désactivées
-              : () async {
-                  await controller.submitSelectedItem();
+    Get.put(OffersController());
+    return GetBuilder<OffersController>(
+        builder: (controller) => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            child: SingleChildScrollView(
+                // Utilisation de SingleChildScrollView pour tout englober
+                child: Column(children: [
+              Costumappbarhome(
+                titleappbar: 'find your meal',
+                onPressedSearch: () {
+                  controller.isSearchFieldNotEmpty() == false
+                      ? controller.onSearchitems()
+                      : null;
                 },
-          child: Obx(() => Text(
-                controller.areRadiosDisabled.value
-                    ? "Veuillez patienter..."
-                    : "Submit",
-                style: TextStyle(
-                    color: controller.areRadiosDisabled.value
-                        ? Colorapp.grey
-                        : Colorapp.primaryColors),
-              )),
-        ),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: controller.items.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.6,
-          ),
-          itemBuilder: (context, i) {
-            return Obx(() => ItemsLunch(
-                  itemLunchModel: ItemLunchModel.fromJson(controller.items[i]),
-                  groupValue: controller.selectedItem.value,
-                  onChanged: controller.areRadiosDisabled.value
-                      ? null
-                      : (value) {
-                          controller.selectItem(value);
-                        },
-                ));
-          },
-        )
-      ],
-    );
+                onPressedIconfavorite: () {
+                  Get.toNamed(approote.myfavorite);
+                },
+                onChanged: (val) {
+                  controller.checkSearch(val);
+                },
+                mycontroller: controller.search!,
+              ),
+              const SizedBox(height: 10),
+              Handlingdataview(
+                  statusrequest: controller.statusrequest,
+                  widget: !controller.isSearch
+                      ? Column(children: [
+                          ElevatedButton(
+                              onPressed: controller.areRadiosDisabled.value
+                                  ? null // Désactive le bouton si les radios sont désactivées
+                                  : () async {
+                                      await controller.submitSelectedItem();
+                                    },
+                              child: Obx(() => Text(
+                                  controller.areRadiosDisabled.value
+                                      ? "Veuillez patienter..."
+                                      : "Submit",
+                                  style: TextStyle(
+                                      color: controller.areRadiosDisabled.value
+                                          ? Colorapp.grey
+                                          : Colorapp.primaryColors)))),
+                          GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: controller.items.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.5,
+                              ),
+                              itemBuilder: (context, i) {
+                                return Obx(() => ItemsLunch(
+                                    itemLunchModel: ItemLunchModel.fromJson(
+                                        controller.items[i]),
+                                    groupValue: controller.selectedItem.value,
+                                    onChanged:
+                                        controller.areRadiosDisabled.value
+                                            ? null
+                                            : (value) {
+                                                controller.selectItem(value);
+                                              }));
+                              })
+                        ])
+                      : ListItemsSearch(listdatamodel: controller.listdata))
+            ]))));
   }
 }
 
-class ItemsLunch extends StatelessWidget {
+class ItemsLunch extends GetView<OffersController> {
   final ItemLunchModel itemLunchModel;
   final String groupValue;
   final Function(String?)? onChanged;
@@ -71,34 +99,30 @@ class ItemsLunch extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(8),
       child: Card(
-        child: Padding(
+          child: Handlingdataview(
+        statusrequest: controller.statusrequest,
+        widget: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Image.network(
-                  "${Linkapi.imageHomelunchitems}/${itemLunchModel.itemsImage}",
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.fill,
+                child: CachedNetworkImage(
+                  imageUrl:
+                      "${Linkapi.imageHomelunchitems}/${itemLunchModel.itemsImage!}",
+                  height: 50,
+                  width: 50,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
               Text(
                 itemLunchModel.itemsName!,
-                style: const TextStyle(
-                  color: Color.fromARGB(255, 64, 62, 62),
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-              Text(
-                '${itemLunchModel.itemsDesc}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  color: Colors.grey,
+                  color: Color.fromARGB(255, 64, 62, 62),
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.italic,
@@ -147,7 +171,7 @@ class ItemsLunch extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 }

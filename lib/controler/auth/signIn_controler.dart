@@ -31,10 +31,14 @@ class SigninControllerImp extends SigninControler {
     if (formstate.currentState!.validate()) {
       statusrequest = Statusrequest.loading;
       update();
+      print("=============================1");
       var response = await loginData.postdata(loginn.text, password.text);
+      print("=============================2");
+      update();
       statusrequest = handlingData(response);
       if (Statusrequest.success == statusrequest) {
         if (response['status'] == 'succes') {
+          print("=============================succes");
           Get.offNamed(approote.changepassword,
               arguments: {"userLogin": loginn.text});
         } else {

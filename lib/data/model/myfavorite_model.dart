@@ -7,7 +7,7 @@ class MyFavoriteModel {
   String? itemsDesc;
   String? itemsImage;
   int? itemsActive;
-  double? itemsPrice;
+  int? itemsPrice;
   int? itemsDiscount;
   String? itemsCreate;
   int? itemsCat;

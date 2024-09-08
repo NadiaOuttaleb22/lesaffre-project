@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prj/controler/home/homescreen_controller.dart';
+import 'package:prj/controler/home/admin/homescreen_controller.dart';
 import 'package:prj/view/widget/home/homepage_wegets/custumbuttonappbar.dart';
 
 class BottonHome extends StatelessWidget {
@@ -8,7 +8,7 @@ class BottonHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomescreenControllerImp>(
+    return GetBuilder<HomescreenControllerAdminImp>(
         builder: (controller) => BottomAppBar(
               shape: const CircularNotchedRectangle(),
               notchMargin: 10,

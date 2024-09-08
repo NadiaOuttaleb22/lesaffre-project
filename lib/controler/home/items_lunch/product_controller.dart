@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prj/core/class/statusrequest.dart';
 import 'package:prj/core/functions/handlingdatacontroller.dart';
@@ -32,10 +31,7 @@ class ProductControllerImp extends GetxController {
     statusrequest = handlingData(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'succes') {
-        Get.rawSnackbar(
-            title: 'succes',
-            messageText: const Text('succes to add product to cart',
-                style: TextStyle(color: Colors.white)));
+        Get.snackbar("Success", "Success to add product to cart");
 
         //data.addAll(response['data']);
         //print("Data fetched successfully: $data");
@@ -57,12 +53,7 @@ class ProductControllerImp extends GetxController {
     statusrequest = handlingData(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'succes') {
-        Get.rawSnackbar(
-            title: 'succes',
-            messageText: const Text(
-              'succes to remove product to cart',
-              style: TextStyle(color: Colors.white),
-            ));
+        Get.snackbar("Success", "Success to remove product to cart");
 
         //data.addAll(response['data']);
         //print("Data fetched successfully: $data");

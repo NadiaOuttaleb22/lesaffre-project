@@ -76,8 +76,14 @@ class ChangepassControllerImp extends ChangepassController {
 
           data.add(response['data']);
           String userType = response['data']['users_type'];
+          String usersAcces = response['data']['users_acces'];
+
           if (userType == '1') {
-            Get.offNamed(approote.normalHomePage);
+            if (usersAcces == "1") {
+              Get.offNamed(approote.normalHomePage);
+            } else {
+              Get.offNamed(approote.normalHomePageBreackFast);
+            }
           } else if (userType == '2') {
             Get.offNamed(approote.welcome);
           } else {

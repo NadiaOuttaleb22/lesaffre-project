@@ -24,6 +24,7 @@ class Custumbuttonappbar extends StatelessWidget {
           Icon(iconData,
               color: active == true ? Colorapp.primaryColors : Colorapp.grey),
           Text(textbutton,
+              textAlign: TextAlign.center,
               style: TextStyle(
                   color:
                       active == true ? Colorapp.primaryColors : Colorapp.grey))

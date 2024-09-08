@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:prj/controler/home/navigator_bar/setting_controller.dart';
 import 'package:prj/core/constant/color.dart';
 import 'package:prj/core/constant/imageassets_and_lottie.dart';
+import 'package:prj/core/constant/rootes.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Setting extends StatelessWidget {
   const Setting({super.key});
@@ -46,6 +48,28 @@ class Setting extends StatelessWidget {
                 ),
                 const Divider(),
                 ListTile(
+                  title: const Text('Orders'),
+                  onTap: () {
+                    Get.toNamed(approote.orders);
+                  },
+                  trailing: const Icon(
+                    Icons.shopping_cart_checkout,
+                    color: Colorapp.grey,
+                  ),
+                ),
+                const Divider(),
+                ListTile(
+                  title: const Text('Archive'),
+                  onTap: () {
+                    Get.toNamed(approote.ordersarchive);
+                  },
+                  trailing: const Icon(
+                    Icons.archive_outlined,
+                    color: Colorapp.grey,
+                  ),
+                ),
+                const Divider(),
+                ListTile(
                   title: const Text('About us'),
                   onTap: () {},
                   trailing: const Icon(
@@ -56,7 +80,9 @@ class Setting extends StatelessWidget {
                 const Divider(),
                 ListTile(
                   title: const Text('Contact us'),
-                  onTap: () {},
+                  onTap: () async {
+                    await launchUrl(Uri.parse("tel:+212762603654"));
+                  },
                   trailing: const Icon(
                     Icons.phone_callback,
                     color: Colorapp.grey,

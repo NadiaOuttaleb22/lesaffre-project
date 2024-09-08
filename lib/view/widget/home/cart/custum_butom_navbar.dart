@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prj/controler/home/cart/add_and_removecart_controller.dart';
 import 'package:prj/core/constant/color.dart';
-import 'package:prj/core/constant/rootes.dart';
 import 'package:prj/core/constant/styles.dart';
 import 'package:prj/view/widget/home/cart/buttonorder.dart';
 import 'package:prj/view/widget/home/cart/custombutton_coupon.dart';
 
-class CustumButomNavbar extends StatelessWidget {
+class CustumButomNavbar extends GetView<AddAndRemovecartController> {
   final String total;
   final String discount;
   final String shipping;
@@ -142,7 +141,9 @@ class CustumButomNavbar extends StatelessWidget {
         ButtonorderCard(
           txt: 'Order',
           onPressed: () {
-            Get.toNamed(approote.checkout);
+            controller.goToPageOrders();
+            //Get.toNamed(approote.checkout);
+            controller.data.isNotEmpty ? controller.checkout() : null;
           },
         ),
       ],
